@@ -1,0 +1,15 @@
+[package]
+name = "parameterized_test"
+description = "A macro to support providing arguments to test functions."
+categories = ["development-tools::testing", "rust-patterns"]
+keywords = ["testing", "parameterized", "macro"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/dimo414/parameterized_test"
+authors = ["Michael Diamond <dimo414@gmail.com>"]
+version = "0.1.0"
+edition = "2018"
+include = [
+    "**/*.rs",
+    "Cargo.toml",
+    "README.md",
+]
