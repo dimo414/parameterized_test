@@ -6,10 +6,18 @@ keywords = ["testing", "parameterized", "macro"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/dimo414/parameterized_test"
 authors = ["Michael Diamond <dimo414@gmail.com>"]
-version = "0.1.0"
+version = "0.2.0"
 edition = "2018"
 include = [
     "**/*.rs",
     "Cargo.toml",
     "README.md",
 ]
+
+[features]
+default = ['propagation']
+propagation = ['anyhow']
+
+[dependencies.anyhow]
+optional = true
+version = "1.0"

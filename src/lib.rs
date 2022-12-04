@@ -30,6 +30,40 @@ macro_rules! __with_dollar_sign {
     }
 }
 
+// Duplicate the create!() macro to optionally support Result.
+// https://stackoverflow.com/a/63011109/113632 suggests using another macro to reduce the amount of
+// duplication, but this macro is messy enough already I think the redundancy is easier to deal with
+#[cfg(feature="propagation")]
+#[macro_export]
+macro_rules! create {
+    ($name:ident, $args:pat, $body:tt) => {
+        $crate::__with_dollar_sign! {
+            ($d:tt) => {
+                macro_rules! $name {
+                    ($d($d pname:ident: $d values:expr,)*) => {
+                        mod $name {
+                            #![ allow( unused_imports ) ]
+                            use super::*;
+                            $d(
+                                #[test]
+                                fn $d pname() -> anyhow::Result<()> {
+                                    // TODO(https://github.com/rust-lang/rust/issues/69517)
+                                    // although Rust 2018 supports Result-returning tests, the
+                                    // failure behavior is very poor. This helper function f() can
+                                    // be removed once Result tests are handled better. Demo:
+                                    // https://play.rust-lang.org/?gist=b1a4d7bf42c885f42598d872877f2504
+                                    fn f() -> anyhow::Result<()> {
+                                        let $args = $d values;
+                                        $body
+                                        Ok(())
+                                    }
+                                    f().unwrap();
+                                    Ok(())
+                                }
+                            )*
+                        }}}}}}}
+
+#[cfg(not(feature="propagation"))]
 #[macro_export]
 macro_rules! create {
     ($name:ident, $args:pat, $body:tt) => {
@@ -70,5 +104,12 @@ mod tests {
     create!{ calls_helper, arg, { assert!(helper(arg)); } }
     calls_helper! {
         arg: true,
+    }
+
+    #[cfg(feature="propagation")]
+    create!{ propagation, n, { assert_eq!(n.to_string().parse::<i8>()? as i32, n); } }
+    #[cfg(feature="propagation")]
+    propagation! {
+        a: 100,  // use a larger value, like 200, to see a parse error test failure
     }
 }

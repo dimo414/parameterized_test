@@ -39,7 +39,7 @@ mod tests {
 }
 ```
 
-This example accepts multiple parameters:
+Tests can also specify multiple parameters:
 
 ```rust
 use parameterized_test::create;
@@ -56,6 +56,27 @@ mod tests {
     commutative! {
         small: (1, 1, 1),
         large: (100, 100, 100),
+    }
+}
+```
+
+The `?` operator is also supported, similar to
+[standalone tests](https://doc.rust-lang.org/rust-by-example/testing/unit_testing.html#tests-and-):
+
+```rust
+use parameterized_test::create;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    parameterized_test::create!{ socket, path, {
+      let socket: SocketAddr = fs::read_to_string(path)?.parse()?;
+      assert_eq!(socket.is_ipv6(), true);
+    }}
+  socket! {
+        relative: "foo.txt",
+        absolute: "/tmp/bar.txt",
     }
 }
 ```

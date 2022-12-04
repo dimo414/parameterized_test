@@ -1,15 +1,25 @@
 name: Rust
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
-  build:
-
+  CI:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v1
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
+    - uses: actions-rs/clippy-check@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        args: --all-targets --all-features
+    - name: Check
+      run: cargo check --all-targets --verbose
+    - name: Check (no-default-features)
+      run: cargo check --all-targets --verbose --no-default-features
+    - name: Check Documentation
+      env:
+        RUSTDOCFLAGS: -D warnings
+      run: cargo doc --no-deps --document-private-items
+    - name: Tests
       run: cargo test --verbose
+    - name: Tests (no-default-features)
+      run: cargo test --verbose --no-default-features
