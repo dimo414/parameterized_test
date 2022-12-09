@@ -30,6 +30,11 @@ macro_rules! __with_dollar_sign {
     }
 }
 
+// Reexport anyhow so the macro can reference it from within clients' crates - see #1 and
+// https://users.rust-lang.org/t/proc-macros-using-third-party-crate/42465/4
+#[cfg(feature="propagation")]
+pub use ::anyhow::Result as AnyhowResult;
+
 // Duplicate the create!() macro to optionally support Result.
 // https://stackoverflow.com/a/63011109/113632 suggests using another macro to reduce the amount of
 // duplication, but this macro is messy enough already I think the redundancy is easier to deal with
@@ -46,13 +51,13 @@ macro_rules! create {
                             use super::*;
                             $d(
                                 #[test]
-                                fn $d pname() -> anyhow::Result<()> {
+                                fn $d pname() -> $crate::AnyhowResult<()> {
                                     // TODO(https://github.com/rust-lang/rust/issues/69517)
                                     // although Rust 2018 supports Result-returning tests, the
                                     // failure behavior is very poor. This helper function f() can
                                     // be removed once Result tests are handled better. Demo:
                                     // https://play.rust-lang.org/?gist=b1a4d7bf42c885f42598d872877f2504
-                                    fn f() -> anyhow::Result<()> {
+                                    fn f() -> $crate::AnyhowResult<()> {
                                         let $args = $d values;
                                         $body
                                         Ok(())

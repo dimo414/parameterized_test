@@ -6,7 +6,7 @@ keywords = ["testing", "parameterized", "macro"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/dimo414/parameterized_test"
 authors = ["Michael Diamond <dimo414@gmail.com>"]
-version = "0.2.0"
+version = "0.2.1"
 edition = "2018"
 include = [
     "**/*.rs",
