@@ -2,7 +2,7 @@
 
 [![crates.io](https://img.shields.io/crates/v/parameterized_test?logo=rust)](https://crates.io/crates/parameterized_test)
 [![docs.rs](https://img.shields.io/docsrs/parameterized_test?label=docs.rs)](https://docs.rs/parameterized_test)
-[![build status](https://img.shields.io/github/workflow/status/dimo414/parameterized_test/Rust/main)](https://github.com/dimo414/parameterized_test/actions)
+[![build status](https://img.shields.io/github/actions/workflow/status/dimo414/parameterized_test/rust.yml?branch=main)](https://github.com/dimo414/parameterized_test/actions)
 [![issues](https://img.shields.io/github/issues/dimo414/parameterized_test)](https://github.com/dimo414/parameterized_test/issues)
 
 This small crate provides a `parameterized_test::create!()` macro to simplify creating repeated
